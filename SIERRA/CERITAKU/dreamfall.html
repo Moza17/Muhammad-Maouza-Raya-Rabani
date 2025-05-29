@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>DREAMFALL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts: Unbounded for title, Poppins for content -->
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+      color: #ffeafa;
+      background: #09060a;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      z-index: 0;
+      left: 0; top: 0; right: 0; bottom: 0;
+      /* Pink galaxy swirl gradient */
+      background: radial-gradient(ellipse at 70% 35%, #f8b7ff33 0%, #e249be66 18%, #7a295a55 40%, #09060a 70%),
+                  radial-gradient(circle at 28% 62%, #e249be33 0%, #09060a 70%),
+                  linear-gradient(120deg, #09060a 0%, #3e1932 22%, #09060a 80%, #2e003e 100%);
+      background-blend-mode: lighten, lighten, normal;
+      background-size: 120% 120%;
+      animation: gradientBG 18s ease-in-out infinite;
+      opacity: 1;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%, 100% 100%, 0% 50%;}
+      50% {background-position: 100% 50%, 0% 0%, 100% 50%;}
+      100% {background-position: 0% 50%, 100% 100%, 0% 50%;}
+    }
+
+    /* Pink Galaxy Nebula swirl (SVG) */
+    .galaxy-nebula {
+      position: fixed;
+      z-index: 1;
+      pointer-events: none;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      opacity: 0.28;
+      mix-blend-mode: lighten;
+    }
+    /* Floating clouds, dust, and rest as before */
+    .dream-floater { position: fixed; pointer-events: none; z-index: 10; left: 0; top: 0; width: 100vw; height: 100vh; overflow: visible; mix-blend-mode: lighten; }
+    .dream-cloud { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0.22; filter: blur(22px) brightness(1.11); background: radial-gradient(circle at 60% 45%, #ffd6f8 0%, #e249be 70%, #fff0fa 100%); animation: cloudFloat 18s ease-in-out infinite alternate; transition: opacity .6s; }
+    .dream-cloud.c1 { left: 10vw; top: 8vh; width: 180px; height: 90px; animation-delay: 0s;}
+    .dream-cloud.c2 { left: 62vw; top: 18vh; width: 130px; height: 60px; opacity: 0.13; animation-delay: 2s;}
+    .dream-cloud.c3 { left: 30vw; top: 60vh; width: 120px; height: 80px; opacity: 0.14; animation-delay: 5s;}
+    .dream-cloud.c4 { left: 70vw; top: 73vh; width: 90px; height: 50px; opacity: 0.10; animation-delay: 7s;}
+    .dream-cloud.c5 { left: 45vw; top: 33vh; width: 230px; height: 110px; opacity: 0.09; animation-delay: 9s;}
+    @keyframes cloudFloat {
+      0% { transform: translateY(0) translateX(0) scale(1);}
+      30% { transform: translateY(-12px) translateX(16px) scale(1.07);}
+      60% { transform: translateY(13px) translateX(-11px) scale(1.04);}
+      100% { transform: translateY(0) translateX(0) scale(1);}
+    }
+    .dream-dust { position: fixed; z-index: 11; pointer-events: none; left: 0; top: 0; width: 100vw; height: 100vh; overflow: visible; }
+    /* Center container & UI (keep previous) */
+    .center-container {
+      position: relative;
+      z-index: 20;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 50px 12px 20px 12px;
+      transition: background .3s;
+    }
+    .main-title {
+      font-family: 'Unbounded', cursive;
+      font-size: 3.2em;
+      letter-spacing: 0.17em;
+      color: #ffd6f8;
+      margin-bottom: .23em;
+      text-shadow: 0 4px 40px #e249be99, 0 1px 2px #000a, 0 0 16px #c91cb7, 0 0 80px #fff2;
+      filter: drop-shadow(0 0 12px #e249be77);
+      cursor: pointer;
+      user-select: none;
+      animation: pulseTitle 3.1s infinite alternate;
+      transition: text-shadow .3s, color .3s;
+      background: linear-gradient(90deg, #e249be 0%, #ffd6f8 65%, #fff0 100%);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @keyframes pulseTitle {
+      0% { text-shadow: 0 4px 40px #e249be99, 0 1px 2px #000a, 0 0 16px #c91cb7, 0 0 80px #fff2;}
+      100% { text-shadow: 0 7px 60px #ffd6f8ee, 0 2px 8px #e249be, 0 0 34px #c91cb7, 0 0 120px #fff3;}
+    }
+    .subtitle {
+      font-size: 1.13em;
+      color: #ffd6f8;
+      margin-bottom: 1.4em;
+      letter-spacing: 0.10em;
+      text-shadow: 0 1px 12px #e249be66;
+      font-weight: 600;
+      background: linear-gradient(90deg, #522038cc 0%, #e249be99 100%);
+      border-radius: 12px;
+      padding: 7px 22px;
+      display: inline-block;
+      margin-top: 0;
+      margin-bottom: 1.5em;
+      border: 1.5px solid #e249be44;
+      box-shadow: 0 2px 10px #e249be11;
+    }
+    .sinopsis-box {
+      background: rgba(60,24,52,0.93);
+      border-radius: 18px;
+      padding: 30px 32px 26px 32px;
+      margin-bottom: 2.2em;
+      box-shadow: 0 4px 32px #e249be44, 0 0px 2.5px #ffd6f8, 0 0 70px #e249be33;
+      color: #fff0fa;
+      max-width: 570px;
+      font-size: 1.11em;
+      line-height: 1.8;
+      border-left: 6px solid #e249be;
+      border-right: 2.5px solid #ffd6f8;
+      backdrop-filter: blur(2.5px);
+      transition: box-shadow .22s, border-color .22s, background .22s;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    .sinopsis-box b {
+      color: #e249be;
+      text-shadow: 0 2px 8px #c91cb766;
+      letter-spacing: 0.02em;
+    }
+    .download-btn {
+      background: linear-gradient(90deg, #e249be 0%, #ffd6f8 100%);
+      color: #432437;
+      border: none;
+      border-radius: 999px;
+      padding: 19px 56px;
+      font-size: 1.08em;
+      font-weight: bold;
+      letter-spacing: 0.13em;
+      cursor: pointer;
+      box-shadow: 0 7px 28px #e249be55, 0 2px 7px #ffd6f855;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 8px;
+      z-index: 1;
+      position: relative;
+      overflow: hidden;
+      outline: none;
+      border: 2.5px solid transparent;
+      animation: borderGlow 3.4s infinite alternate;
+      transition: background 0.2s, transform 0.2s, box-shadow .22s;
+    }
+    @keyframes borderGlow {
+      0% { border-color: #e249be; }
+      100% { border-color: #ffd6f8; }
+    }
+    .download-btn:active {
+      transform: scale(0.97);
+    }
+    .download-btn:hover {
+      background: linear-gradient(90deg, #ffd6f8 0%, #e249be 100%);
+      box-shadow: 0 13px 32px #ffd6f877;
+      border-color: #fff;
+      color: #e249be;
+    }
+    .download-btn span {
+      position: relative;
+      z-index: 1;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 1.07em;
+      letter-spacing: 0.1em;
+    }
+    .download-btn::before {
+      content: "";
+      position: absolute;
+      left: -60px;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      opacity: 0.0;
+      transition: opacity .2s;
+      z-index: 2;
+      pointer-events: none;
+      animation: shine 2.6s infinite linear;
+    }
+    @keyframes shine {
+      0% { left: -70px; opacity: 0;}
+      60% { left: -70px; opacity: 0;}
+      80% { left: 100%; opacity: 0.3;}
+      100% { left: 100%; opacity: 0;}
+    }
+    .credit {
+      margin-top: 3em;
+      color: #ffd6f8;
+      font-size: .97em;
+      opacity: .69;
+      z-index: 1;
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-shadow: 0 1px 3px #3b102e;
+      font-style: italic;
+      padding-bottom: 20px;
+    }
+    .modal-bg {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(75, 13, 52, 0.90);
+      justify-content: center;
+      align-items: center;
+      transition: opacity .2s;
+    }
+    .modal-bg.active {
+      display: flex;
+      animation: fadeIn .3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0;}
+      to { opacity: 1;}
+    }
+    .modal-content {
+      background: #291223;
+      border-radius: 15px;
+      padding: 38px 28px 28px 28px;
+      max-width: 350px;
+      text-align: center;
+      color: #ffd6f8;
+      box-shadow: 0 2px 18px #e249be88;
+      position: relative;
+      animation: popIn .5s;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.7);}
+      100% { transform: scale(1);}
+    }
+    .modal-content h3 {
+      margin-top: 0; color: #e249be; font-size: 1.4em;
+      font-family: 'Unbounded', cursive;
+    }
+    .modal-content p {
+      font-size: 1.08em; margin-bottom: 15px;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .close-btn {
+      background: #e249be;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 22px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: background .2s;
+    }
+    .close-btn:hover {
+      background: #ffd6f8;
+      color: #291223;
+    }
+    @media (max-width: 700px) {
+      .main-title { font-size: 2.1em; }
+      .subtitle { font-size: 1em; }
+      .sinopsis-box { font-size: 1em; padding: 16px 7vw;}
+      .download-btn { font-size: 1em; padding: 14px 18vw; }
+      .tentacle { width: 250px; height: 330px; }
+      .tentacle.t1 { left: -60px; top: 10vh;}
+      .tentacle.t2 { right: -90px; top: 24vh;}
+      .tentacle.t3 { left: 44vw; bottom: -140px; width: 200px; height: 300px;}
+      .neon-strobe { width: 250px; height: 250px; top: 65%; }
+      .portal { width:80px !important; height:80px !important;}
+      .portal.p5 { width:120px !important; height:120px !important;}
+    }
+    @media (max-width: 400px) {
+      .sinopsis-box { padding: 10px 2vw;}
+      .download-btn { padding: 11px 8vw;}
+      .modal-content { padding: 20px 5vw;}
+      .neon-strobe { width: 120px; height: 120px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Pink galaxy nebula effect (SVG + blend) -->
+  <div class="galaxy-nebula">
+    <svg width="100%" height="100%" viewBox="0 0 1920 1080">
+      <defs>
+        <radialGradient id="g1" cx="68%" cy="35%" r="50%">
+          <stop offset="0%" stop-color="#ff99f9" stop-opacity="0.29"/>
+          <stop offset="44%" stop-color="#e249be" stop-opacity="0.27"/>
+          <stop offset="100%" stop-color="#09060a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g2" cx="30%" cy="70%" r="60%">
+          <stop offset="0%" stop-color="#ffd6f8" stop-opacity="0.22"/>
+          <stop offset="70%" stop-color="#7a295a" stop-opacity="0.16"/>
+          <stop offset="100%" stop-color="#09060a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g3" cx="80%" cy="80%" r="65%">
+          <stop offset="0%" stop-color="#fff0fa" stop-opacity="0.17"/>
+          <stop offset="100%" stop-color="#09060a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="1300" cy="350" rx="600" ry="280" fill="url(#g1)" />
+      <ellipse cx="550" cy="700" rx="370" ry="180" fill="url(#g2)" />
+      <ellipse cx="1500" cy="900" rx="230" ry="130" fill="url(#g3)" />
+      <ellipse cx="1100" cy="210" rx="230" ry="70" fill="#ffd6f8" opacity="0.03"/>
+      <ellipse cx="900" cy="600" rx="130" ry="50" fill="#fff0fa" opacity="0.04"/>
+    </svg>
+  </div>
+  <!-- Dreamy floating clouds -->
+  <div class="dream-floater">
+    <div class="dream-cloud c1"></div>
+    <div class="dream-cloud c2"></div>
+    <div class="dream-cloud c3"></div>
+    <div class="dream-cloud c4"></div>
+    <div class="dream-cloud c5"></div>
+  </div>
+  <!-- Dreamy floating dust/particle effect -->
+  <canvas class="dream-dust" id="dream-dust"></canvas>
+  <div class="center-container">
+    <div class="main-title" id="judul">DREAMFALL</div>
+    <div class="subtitle">Petualangan Magis di Dunia Antara Mimpi dan Kenyataan</div>
+    <div class="sinopsis-box" id="sinopsis">
+      Di antara batas mimpi dan kenyataan, seorang remaja bernama Nara menemukan dunia lain di balik tidurnya—dunia di mana imajinasi membentuk kenyataan dan bahaya mengintai di balik keindahan.<br><br>
+      Suatu malam, Nara terjatuh ke dalam mimpi yang tidak bisa ia tinggalkan. Bersama makhluk-makhluk aneh dan teman baru, ia harus memecahkan teka-teki, menghadapi ketakutannya sendiri, dan mencari jalan pulang sebelum fajar tiba.<br><br>
+      <b>DREAMFALL</b> adalah kisah petualangan magis tentang harapan, keberanian, dan kekuatan mimpi yang mampu mengubah segalanya.
+    </div>
+    <a href="DREAMFALL.pdf" class="download-btn" id="downloadBtn" download>
+      <span>⬇️ Download Cerita</span>
+    </a>
+    <div class="credit">© 2025 Mozaajalah. All rights reserved.</div>
+  </div>
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-content">
+      <h3>Terima Kasih!</h3>
+      <p>Cerita <b>"Dreamfall"</b> sedang diunduh.<br>Selamat menjelajah dunia mimpi!</p>
+      <button class="close-btn" id="closeModal">Tutup</button>
+    </div>
+  </div>
+  <script>
+    // Dreamy floating dust particles
+    const dreamDust = document.getElementById('dream-dust');
+    const ctxDust = dreamDust.getContext('2d');
+    let wDust = window.innerWidth, hDust = window.innerHeight;
+    function resizeDust() {
+      wDust = window.innerWidth;
+      hDust = window.innerHeight;
+      dreamDust.width = wDust;
+      dreamDust.height = hDust;
+    }
+    window.addEventListener('resize', resizeDust);
+    resizeDust();
+    function DreamDustParticle() {
+      this.x = Math.random() * wDust;
+      this.y = Math.random() * hDust;
+      this.radius = Math.random() * 1.9 + 0.8;
+      this.alpha = Math.random() * 0.18 + 0.10;
+      this.color = Math.random() > 0.6 ? "#ffd6f8" : (Math.random() > 0.5 ? "#fff0fa" : "#e249be");
+      this.dx = (Math.random() - 0.5) * 0.07;
+      this.dy = (Math.random() - 0.5) * 0.09;
+      this.float = Math.random() * Math.PI * 2;
+      this.floatSpeed = Math.random() * 0.03 + 0.017;
+    }
+    let dustParticles = [];
+    function createDreamDust(n) {
+      dustParticles = [];
+      for(let i=0; i<n; i++) dustParticles.push(new DreamDustParticle());
+    }
+    function animateDreamDust() {
+      ctxDust.clearRect(0,0,wDust,hDust);
+      for(let i=0; i<dustParticles.length; i++) {
+        let p = dustParticles[i];
+        let fx = Math.sin(Date.now()/1100 + p.float) * 2;
+        let fy = Math.cos(Date.now()/2000 + p.float) * 3;
+        ctxDust.save();
+        ctxDust.globalAlpha = p.alpha;
+        ctxDust.beginPath();
+        ctxDust.arc(p.x+fx,p.y+fy,p.radius,0,2*Math.PI,false);
+        ctxDust.fillStyle = p.color;
+        ctxDust.shadowColor = p.color;
+        ctxDust.shadowBlur = 8;
+        ctxDust.fill();
+        ctxDust.restore();
+        p.x += p.dx;
+        p.y += p.dy;
+        p.float += p.floatSpeed;
+        if(p.x<-10||p.x>wDust+10||p.y<-10||p.y>hDust+10) {
+          dustParticles[i] = new DreamDustParticle();
+        }
+      }
+      requestAnimationFrame(animateDreamDust);
+    }
+    createDreamDust(wDust>700? 38 : 14);
+    animateDreamDust();
+    window.addEventListener('resize',()=>createDreamDust(wDust>700? 38 : 14));
+
+    // Modal and other effects (copy your previous JS)
+    const downloadBtn = document.getElementById('downloadBtn');
+    const modalBg = document.getElementById('modalBg');
+    const closeModal = document.getElementById('closeModal');
+    downloadBtn.addEventListener('click', function(e) {
+      setTimeout(() => {
+        modalBg.classList.add('active');
+      }, 500);
+    });
+    closeModal.addEventListener('click', () => {
+      modalBg.classList.remove('active');
+    });
+    modalBg.addEventListener('click', function(e) {
+      if (e.target === modalBg) {
+        modalBg.classList.remove('active');
+      }
+    });
+    // Interaktif hover judul
+    const judul = document.getElementById('judul');
+    judul.addEventListener('mousemove', function(e) {
+      const { left, top, width, height } = judul.getBoundingClientRect();
+      const x = e.clientX - left - width/2;
+      const y = e.clientY - top - height/2;
+      judul.style.textShadow =
+        `${x/10}px ${y/10}px 24px #e249be99, ` +
+        `${-x/12}px ${-y/12}px 10px #ffd6f8bb, ` +
+        `0 2px 6px #ffb7e699`;
+    });
+    judul.addEventListener('mouseleave', function() {
+      judul.style.textShadow = "0 4px 40px #e249be99, 0 1px 2px #000a, 0 0 16px #c91cb7, 0 0 80px #fff2";
+    });
+  </script>
+</body>
+</html>

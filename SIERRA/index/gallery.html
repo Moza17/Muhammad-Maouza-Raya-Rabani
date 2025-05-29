@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../gallery.css">
+    <title>GALLERY SIERRA</title>
+</head>
+    <body>
+        <h1>Gallery SIERRA</h1>
+    <p>Kumpulan foto-foto pilihan dari SIERRA.</p>
+    <div class="gallery">
+        <img src="../poto/nza.png" alt="Foto 1" width="200">
+        <img src="../poto/nza1.jpg" alt="Foto 2" width="200">
+        <img src="../poto/nza2.jpg" alt="Foto 3" width="200">
+        <img src="../poto/nza3.jpg" alt="Foto 4" width="200">
+        <img src="../poto/nza4.jpg" alt="Foto 5" width="200">
+        <img src="../poto/nza5.jpg" alt="Foto 6" width="200">
+        <img src="../poto/nza6.jpg" alt="Foto 7" width="200">
+        <img src="../poto/nza7.jpg" alt="Foto 8" width="200">
+        <img src="../poto/nza8.jpg" alt="Foto 9" width="200">
+        <img src="../poto/nza9.jpeg" alt="Foto 10" width="200">
+        <img src="../poto/nza10.jpeg" alt="Foto 11" width="200">
+        <img src="../poto/nza11.jpg" alt="Foto 12" width="200">
+        <img src="../poto/nza12.jpg" alt="Foto 13" width="200">
+        <img src="../poto/nza13.jpg" alt="Foto 14" width="200">
+        <img src="../poto/nza14.jpg" alt="Foto 15" width="200">
+    </div>
+    <!-- Lightbox Overlay -->
+    <!-- ...existing code... -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="Full Foto">
+    </div>
+
+    <a href="../index.html" class="back-home">Kembali ke Home</a>
+
+    <script>
+        const galleryImgs = document.querySelectorAll('.gallery img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        galleryImgs.forEach(img => {
+            img.addEventListener('click', function() {
+                lightboxImg.src = this.src;
+                lightbox.classList.add('show');
+            });
+        });
+        lightboxClose.onclick = function() {
+            lightbox.classList.remove('show');
+        };
+        lightbox.onclick = function(e) {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('show');
+            }
+        };
+    </script>
+</body>
+</html>

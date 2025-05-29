@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Games of World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts: Cinzel Decorative for title, Poppins for content -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+      color: #f7f3ff;
+      background: #0d1736;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      z-index: 0;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: linear-gradient(120deg, #0d1736 0%, #0e254e 45%, #1e2b44 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 22s ease-in-out infinite;
+      opacity: 1;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 80%;}
+      50% {background-position: 100% 20%;}
+      100% {background-position: 0% 80%;}
+    }
+    .stars, .stars2, .stars3 {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      display: block;
+      z-index: 1;
+      pointer-events: none;
+      animation: stars-move 120s linear infinite;
+    }
+    @keyframes stars-move {
+      to { background-position: 1000px 1000px; }
+    }
+    .stars { background: transparent url('https://raw.githubusercontent.com/JulianLaval/canvas-particle-network/master/demo/stars.png') repeat top center; opacity: 0.55;}
+    .stars2 { background: transparent url('https://raw.githubusercontent.com/JulianLaval/canvas-particle-network/master/demo/stars2.png') repeat top center; opacity: 0.25;}
+    .stars3 { background: transparent url('https://raw.githubusercontent.com/JulianLaval/canvas-particle-network/master/demo/stars3.png') repeat top center; opacity: 0.18;}
+    .mist {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 2;
+      background: radial-gradient(ellipse at 40% 60%, rgba(24,170,226,0.19) 0%, rgba(0,0,0,0) 80%),
+                  radial-gradient(ellipse at 72% 40%, rgba(255,255,255,0.09) 0%, rgba(0,0,0,0) 80%);
+      animation: mistmove 12s ease-in-out infinite alternate;
+    }
+    @keyframes mistmove {
+      0% { background-position: 40% 60%, 72% 40%;}
+      100% { background-position: 44% 56%, 68% 38%;}
+    }
+    .floating-orb {
+      position: fixed;
+      top: 15vh;
+      left: 11vw;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at 40% 65%, #29c3f0 0%, #2e6ee6 90%, #0000 100%);
+      border-radius: 50%;
+      opacity: 0.33;
+      filter: blur(8px);
+      pointer-events: none;
+      animation: floatorb 7s ease-in-out infinite alternate;
+      z-index: 3;
+    }
+    @keyframes floatorb {
+      0%   { transform: translateY(0) scale(1);}
+      50%  { transform: translateY(-28px) scale(1.13);}
+      100% { transform: translateY(0) scale(1);}
+    }
+    .floating-orb2 {
+      position: fixed;
+      bottom: 10vh;
+      right: 10vw;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle at 60% 40%, #f7b731 0%, #29c3f0 80%, #0000 100%);
+      border-radius: 50%;
+      opacity: 0.23;
+      filter: blur(10px);
+      pointer-events: none;
+      animation: floatorb2 11s ease-in-out infinite alternate;
+      z-index: 3;
+    }
+    @keyframes floatorb2 {
+      0%   { transform: translateY(0) scale(1);}
+      50%  { transform: translateY(18px) scale(1.10);}
+      100% { transform: translateY(0) scale(1);}
+    }
+    .center-container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 50px 12px 20px 12px;
+      transition: background .3s;
+    }
+    .main-title {
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 3.4em;
+      letter-spacing: 0.18em;
+      color: #29c3f0;
+      margin-bottom: .14em;
+      text-shadow:
+        0 6px 30px #2e6ee6aa,
+        0 2px 2px #0006,
+        0 0 18px #29c3f0,
+        0 0 80px #fff3;
+      filter: drop-shadow(0 0 12px #29c3f066);
+      cursor: pointer;
+      user-select: none;
+      animation: pulseTitle 3.2s infinite alternate;
+      transition: text-shadow .3s, color .3s;
+    }
+    @keyframes pulseTitle {
+      0% { text-shadow: 0 6px 30px #2e6ee6aa, 0 2px 2px #0006, 0 0 18px #29c3f0, 0 0 80px #fff3;}
+      100% { text-shadow: 0 9px 44px #29c3f0cc, 0 2px 8px #f7b731, 0 0 38px #2e6ee6, 0 0 120px #fff;}
+    }
+    .main-title:hover {
+      color: #f7b731;
+      text-shadow: 0 8px 60px #f7b731, 0 2px 14px #29c3f0, 0 0 30px #2e6ee6, 0 0 130px #fffc;
+    }
+    .subtitle {
+      font-size: 1.22em;
+      color: #fffbe3;
+      font-weight: 600;
+      margin-bottom: 1.2em;
+      letter-spacing: 0.09em;
+      text-shadow: 0 2px 12px #2e6ee655;
+      background: linear-gradient(90deg, #29c3f033 0%, #f7b73133 100%);
+      border-radius: 12px;
+      padding: 7px 26px;
+      display: inline-block;
+      border: 1.5px solid #29c3f033;
+      box-shadow: 0 2px 10px #2e6ee611;
+    }
+    .sinopsis-box {
+      background: rgba(22, 32, 56, 0.89);
+      border-radius: 20px;
+      padding: 30px 38px 27px 38px;
+      margin-bottom: 2.2em;
+      box-shadow: 0 4px 44px #29c3f033, 0 0px 2.5px #f7b731, 0 0 50px #2e6ee655;
+      color: #fffbe0;
+      max-width: 570px;
+      font-size: 1.13em;
+      line-height: 1.8;
+      border-left: 5px solid #29c3f0;
+      border-right: 2.5px solid #f7b731;
+      backdrop-filter: blur(2px);
+      transition: box-shadow .22s, border-color .22s, background .22s;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    .sinopsis-box::before {
+      content: "";
+      position: absolute;
+      left: -36px; top: 26px;
+      width: 46px; height: 46px;
+      background: url('https://cdn-icons-png.flaticon.com/512/616/616494.png') no-repeat center center/contain;
+      opacity: 0.07;
+      pointer-events: none;
+      filter: blur(1.2px);
+      z-index: 0;
+    }
+    .sinopsis-box::after {
+      content: "";
+      position: absolute;
+      right: -26px; bottom: -18px;
+      width: 60px; height: 60px;
+      background: radial-gradient(circle at 60% 55%, #29c3f044 0%, #0000 90%);
+      opacity: 0.6;
+      pointer-events: none;
+      filter: blur(6px);
+      z-index: 0;
+    }
+    .sinopsis-box b {
+      color: #29c3f0;
+      text-shadow: 0 2px 18px #2e6ee655;
+      letter-spacing: 0.02em;
+    }
+    .sinopsis-box:hover {
+      box-shadow: 0 10px 70px #29c3f077, 0 0px 4px #f7b731;
+      border-color: #fff2;
+      background: rgba(38, 37, 67, 0.93);
+    }
+    .download-btn {
+      background: linear-gradient(90deg, #29c3f0 0%, #f7b731 100%);
+      color: #232a4d;
+      border: none;
+      border-radius: 999px;
+      padding: 21px 64px;
+      font-size: 1.15em;
+      font-weight: bold;
+      letter-spacing: 0.13em;
+      cursor: pointer;
+      box-shadow: 0 7px 38px #29c3f055, 0 2px 7px #fff2;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 8px;
+      z-index: 1;
+      position: relative;
+      overflow: hidden;
+      outline: none;
+      border: 3.5px solid transparent;
+      animation: borderGlow 3.1s infinite alternate;
+      transition: background 0.2s, transform 0.2s, box-shadow .22s;
+    }
+    @keyframes borderGlow {
+      0% { border-color: #29c3f0; }
+      100% { border-color: #f7b731; }
+    }
+    .download-btn:active {
+      transform: scale(0.96);
+    }
+    .download-btn:hover {
+      background: linear-gradient(90deg, #f7b731 0%, #29c3f0 100%);
+      box-shadow: 0 13px 42px #29c3f099;
+      border-color: #fff;
+      color: #2e6ee6;
+    }
+    .download-btn span {
+      position: relative;
+      z-index: 1;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 1.13em;
+      letter-spacing: 0.07em;
+    }
+    .download-btn::before {
+      content: "";
+      position: absolute;
+      left: -60px;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.19) 0%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      opacity: 0.0;
+      transition: opacity .2s;
+      z-index: 2;
+      pointer-events: none;
+      animation: shine 2.9s infinite linear;
+    }
+    @keyframes shine {
+      0% { left: -70px; opacity: 0;}
+      60% { left: -70px; opacity: 0;}
+      80% { left: 100%; opacity: 0.5;}
+      100% { left: 100%; opacity: 0;}
+    }
+    #particles-js {
+      z-index: 2;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+    }
+    .credit {
+      margin-top: 3em;
+      color: #e3e6f7;
+      font-size: .99em;
+      opacity: .72;
+      z-index: 1;
+      text-align: center;
+      letter-spacing: 0.05em;
+      text-shadow: 0 1px 3px #0005;
+      font-style: italic;
+      padding-bottom: 20px;
+    }
+    .modal-bg {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(13, 23, 54, 0.93);
+      justify-content: center;
+      align-items: center;
+      transition: opacity .2s;
+    }
+    .modal-bg.active {
+      display: flex;
+      animation: fadeIn .3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0;}
+      to { opacity: 1;}
+    }
+    .modal-content {
+      background: #12204a;
+      border-radius: 16px;
+      padding: 36px 26px 26px 26px;
+      max-width: 360px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 2px 28px #29c3f088;
+      position: relative;
+      animation: popIn .5s;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.7);}
+      100% { transform: scale(1);}
+    }
+    .modal-content h3 {
+      margin-top: 0; color: #29c3f0; font-size: 1.4em;
+      font-family: 'Cinzel Decorative', cursive;
+    }
+    .modal-content p {
+      font-size: 1.05em; margin-bottom: 15px;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+    .close-btn {
+      background: #29c3f0;
+      color: #232a4d;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 22px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: background .2s, color .2s;
+    }
+    .close-btn:hover {
+      background: #f7b731;
+      color: #1e2b44;
+    }
+    /* Floating playing cards */
+    .cards-area {
+      position: fixed;
+      pointer-events: none;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: 8;
+      overflow: visible;
+    }
+
+    .remi-card {
+      position: absolute;
+      width: 56px;
+      height: 77px;
+      background: #fff;
+      border-radius: 11px;
+      box-shadow: 0 2px 20px #0008, 0 1px 1px #29c3f055;
+      border: 2px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2em;
+      color: #232a4d;
+      user-select: none;
+      opacity: 0.89;
+      will-change: transform, opacity;
+      transition: filter .2s;
+    }
+    .remi-card.red {
+      color: #d12d36;
+    }
+    .remi-card.black {
+      color: #232a4d;
+    }
+    .remi-card .corner {
+      font-size: 0.6em;
+      position: absolute;
+      left: 7px;
+      top: 7px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-weight: bold;
+      opacity: 0.8;
+    }
+    .remi-card.joker {
+      background: linear-gradient(135deg, #fff 65%, #cfd8dc 100%);
+      color: #7b1fa2;
+      border: 2.5px solid #7b1fa2;
+      font-size: 3.5em;
+      filter: drop-shadow(0 0 16px #f7b731bb) drop-shadow(0 0 5px #29c3f0aa);
+      cursor: pointer;
+      z-index: 20;
+      opacity: 1;
+      transition: box-shadow .2s, filter .2s;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .remi-card.joker .corner {
+      display: none;
+    }
+    .remi-card.joker:active {
+      filter: drop-shadow(0 0 40px #29c3f0ff) drop-shadow(0 0 16px #f7b731);
+    }
+    .remi-card.joker:hover {
+      box-shadow: 0 0 24px #29c3f0aa, 0 4px 16px #f7b73199;
+      filter: drop-shadow(0 0 24px #f7b731cc) brightness(1.14);
+      opacity: 1;
+    }
+    .remi-card.joker .joker-symbol {
+      font-size: 1.2em;
+      display: block;
+      font-family: 'Cinzel Decorative', cursive;
+      color: #7b1fa2;
+      filter: drop-shadow(0 0 8px #f7b73166);
+      text-shadow: 0 2px 16px #29c3f0;
+    }
+    @media (max-width: 700px) {
+      .main-title { font-size: 2.1em; }
+      .subtitle { font-size: 1em; }
+      .sinopsis-box { font-size: 1em; padding: 16px 7vw;}
+      .download-btn { font-size: 1em; padding: 14px 18vw; }
+      .remi-card { width: 40px; height: 55px; font-size: 1.3em;}
+      .remi-card.joker { font-size: 2.3em;}
+    }
+    @media (max-width: 400px) {
+      .sinopsis-box { padding: 10px 2vw;}
+      .download-btn { padding: 11px 8vw;}
+      .modal-content { padding: 20px 5vw;}
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-orb"></div>
+  <div class="floating-orb2"></div>
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+  <div class="mist"></div>
+  <canvas id="particles-js"></canvas>
+  <!-- Kartu Remi Melayang -->
+  <div class="cards-area" id="cardsArea"></div>
+  <!-- Joker Laugh Sound -->
+  <audio id="jokerLaugh" src="https://cdn.pixabay.com/audio/2022/08/20/audio_12c3b5a5b7.mp3"></audio>
+
+  <div class="center-container">
+    <div class="main-title" id="judul">Games of World</div>
+    <div class="subtitle">Cerita Fantasi Penuh Petualangan dan Permainan Takdir</div>
+    <div class="sinopsis-box" id="sinopsis">
+      Dunia berubah menjadi arena permainan raksasa.<br>
+      Tiap insan menjadi pion, tiap langkah membawa risiko dan kejutan.<br><br>
+      Dalam <b>Games of World</b>, para pemain harus menghadapi teka-teki, bahaya, dan pilihan sulit demi bertahan hidup dan menemukan arti kemenangan sejati.<br><br>
+      Siapkah kamu bermain dalam dunia di mana aturan selalu berubah?
+    </div>
+    <a href="Games-of-World.pdf" class="download-btn" id="downloadBtn" download>
+      <span>⬇️ Download Cerita</span>
+    </a>
+    <div class="credit">© 2025 Muhammad Maouza Raya Rabani. Semua hak cipta dilindungi.</div>
+  </div>
+
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-content">
+      <h3>Terima Kasih!</h3>
+      <p>Cerita <b>"Games of World"</b> sedang diunduh.<br>Selamat membaca dan selamat bermain dalam dunia baru!</p>
+      <button class="close-btn" id="closeModal">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    // Particle effect
+    const canvas = document.getElementById('particles-js');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let w = window.innerWidth, h = window.innerHeight;
+    function resizeCanvas() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function randomColor() {
+      const colors = ["#29c3f0", "#f7b731", "#2e6ee6", "#fffbe0"];
+      return colors[Math.floor(Math.random()*colors.length)];
+    }
+    function Particle() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.radius = Math.random() * 2.2 + 0.8;
+      this.color = randomColor();
+      this.alpha = Math.random() * .45 + .15;
+      this.dx = (Math.random() - 0.5) * 0.45;
+      this.dy = (Math.random() - 0.5) * 0.45;
+    }
+    function createParticles(num) {
+      particles = [];
+      for(let i=0; i<num; i++) particles.push(new Particle());
+    }
+    function animateParticles() {
+      ctx.clearRect(0,0,w,h);
+      for(let i=0; i<particles.length; i++) {
+        let p = particles[i];
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.radius,0,2*Math.PI,false);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 15;
+        ctx.fill();
+        ctx.restore();
+        p.x += p.dx;
+        p.y += p.dy;
+        if(p.x<0||p.x>w||p.y<0||p.y>h) {
+          particles[i] = new Particle();
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    createParticles(w>700? 60 : 22);
+    animateParticles();
+    window.addEventListener('resize',()=>createParticles(w>700? 60 : 22));
+
+    // Download modal
+    const downloadBtn = document.getElementById('downloadBtn');
+    const modalBg = document.getElementById('modalBg');
+    const closeModal = document.getElementById('closeModal');
+    downloadBtn.addEventListener('click', function(e) {
+      setTimeout(() => {
+        modalBg.classList.add('active');
+      }, 500);
+    });
+    closeModal.addEventListener('click', () => {
+      modalBg.classList.remove('active');
+    });
+    modalBg.addEventListener('click', function(e) {
+      if (e.target === modalBg) {
+        modalBg.classList.remove('active');
+      }
+    });
+
+    // Judul efek interaktif
+    const judul = document.getElementById('judul');
+    judul.addEventListener('mousemove', function(e) {
+      const { left, top, width, height } = judul.getBoundingClientRect();
+      const x = e.clientX - left - width/2;
+      const y = e.clientY - top - height/2;
+      judul.style.textShadow =
+        `${x/10}px ${y/10}px 28px #29c3f099, ` +
+        `${-x/12}px ${-y/12}px 12px #f7b731cc, ` +
+        `0 2px 8px #0006`;
+    });
+    judul.addEventListener('mouseleave', function() {
+      judul.style.textShadow = "0 6px 30px #2e6ee6aa, 0 2px 2px #0006, 0 0 18px #29c3f0, 0 0 80px #fff3";
+    });
+
+    // Floating playing cards & Joker
+    const cardsArea = document.getElementById('cardsArea');
+    const cardData = [
+      { rank: "A", suit: "♠", color: "black" },
+      { rank: "A", suit: "♥", color: "red" },
+      { rank: "A", suit: "♣", color: "black" },
+      { rank: "A", suit: "♦", color: "red" },
+      { rank: "K", suit: "♠", color: "black" },
+      { rank: "Q", suit: "♥", color: "red" },
+      { rank: "J", suit: "♣", color: "black" },
+      { rank: "10", suit: "♦", color: "red" },
+      { rank: "7", suit: "♠", color: "black" },
+      { rank: "9", suit: "♦", color: "red" },
+      { rank: "5", suit: "♥", color: "red" },
+      { rank: "3", suit: "♣", color: "black" }
+    ];
+    let cards = [];
+    function createFloatingCards() {
+      // Remove old cards
+      cards.forEach(card => card.el.remove());
+      cards = [];
+      let areaW = window.innerWidth;
+      let areaH = window.innerHeight;
+      let nCards = areaW < 600 ? 5 : 10;
+
+      // Floating ordinary cards
+      for(let i=0; i<nCards; i++) {
+        const idx = Math.floor(Math.random() * cardData.length);
+        const c = cardData[idx];
+        const card = document.createElement('div');
+        card.className = "remi-card " + c.color;
+        card.innerHTML = `<span class="corner">${c.rank}${c.suit}</span>${c.suit}`;
+        // Random position and state
+        const left = Math.random() * 92 + 2;  // vw
+        const top = Math.random() * 75 + 5;   // vh
+        const rot = Math.random() * 60 - 30;  // -30 to 30 deg
+        card.style.left = left + "vw";
+        card.style.top = top + "vh";
+        card.style.transform = `rotate(${rot}deg)`;
+        cardsArea.appendChild(card);
+
+        // Movement parameters
+        cards.push({
+          el: card,
+          x: left/100 * areaW,
+          y: top/100 * areaH,
+          angle: rot,
+          t: Math.random() * 1000,
+          dx: (Math.random()-0.5) * 0.12 * areaW,
+          dy: (Math.random()-0.5) * 0.11 * areaH,
+          baseX: left/100 * areaW,
+          baseY: top/100 * areaH,
+          freq: Math.random() * 0.0015 + 0.0008,
+          amp: Math.random() * 18 + 14,
+          rotSpeed: (Math.random()-0.5)*0.08
+        });
+      }
+
+      // Add Joker card, always 1
+      const left = Math.random() * 85 + 7;  // vw, keep more centered
+      const top = Math.random() * 60 + 10;  // vh
+      const rot = Math.random() * 40 - 20;  // -20 to 20 deg
+      const joker = document.createElement('div');
+      joker.className = "remi-card joker";
+      joker.setAttribute("title", "Klik aku!");
+      joker.innerHTML = `<span class="joker-symbol">🃏</span>`;
+      joker.style.left = left + "vw";
+      joker.style.top = top + "vh";
+      joker.style.transform = `rotate(${rot}deg)`;
+      joker.style.transition += ", box-shadow .2s";
+      joker.style.pointerEvents = "auto";
+      cardsArea.appendChild(joker);
+
+      // Joker movement parameters
+      const jokerObj = {
+        el: joker,
+        x: left/100 * areaW,
+        y: top/100 * areaH,
+        angle: rot,
+        t: Math.random() * 1000,
+        dx: (Math.random()-0.5) * 0.15 * areaW,
+        dy: (Math.random()-0.5) * 0.15 * areaH,
+        baseX: left/100 * areaW,
+        baseY: top/100 * areaH,
+        freq: Math.random() * 0.0012 + 0.0007,
+        amp: Math.random() * 22 + 18,
+        rotSpeed: (Math.random()-0.5)*0.13,
+        isJoker: true
+      };
+      cards.push(jokerObj);
+
+      // Joker laugh event
+      joker.addEventListener("click", function(e) {
+        e.stopPropagation();
+        try {
+          const laugh = document.getElementById("jokerLaugh");
+          laugh.currentTime = 0;
+          laugh.play();
+        } catch(e){}
+        // Visual feedback
+        joker.style.boxShadow = "0 0 60px 12px #f7b731b8, 0 0 120px 20px #29c3f077";
+        setTimeout(() => joker.style.boxShadow = "", 800);
+      });
+    }
+
+    // Smoother card floating with requestAnimationFrame
+    function animateCards() {
+      const areaW = window.innerWidth;
+      const areaH = window.innerHeight;
+      for(const card of cards) {
+        card.t += card.isJoker ? 1.15 : 1.35;
+        // Circular smooth movement
+        const x = card.baseX + Math.sin(card.t*card.freq) * card.amp + card.dx * Math.sin(card.t*card.freq/2);
+        const y = card.baseY + Math.cos(card.t*card.freq) * card.amp + card.dy * Math.cos(card.t*card.freq/2);
+        const angle = card.angle + Math.sin(card.t*card.freq/1.7)*8 + card.rotSpeed*card.t;
+        card.el.style.left = `${x/areaW*100}vw`;
+        card.el.style.top = `${y/areaH*100}vh`;
+        card.el.style.transform = `rotate(${angle}deg)`;
+      }
+      requestAnimationFrame(animateCards);
+    }
+
+    createFloatingCards();
+    animateCards();
+    window.addEventListener('resize', () => {
+      createFloatingCards();
+    });
+    // Tidak ada interval acak ulang, posisi selalu berubah saat reload/resize.
+
+  </script>
+</body>
+</html>

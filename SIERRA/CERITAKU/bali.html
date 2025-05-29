@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Perjalanan ke Bali</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts: Fredoka One, Comfortaa, Quicksand -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comfortaa:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      color: #2f2e41;
+      font-family: 'Quicksand', Arial, sans-serif;
+      overflow-x: hidden;
+      background: #e0f7fa;
+      position: relative;
+      scroll-behavior: smooth;
+    }
+    body {
+      min-height: 100vh;
+    }
+    /* Pantai SVG Layer */
+    #pantai-bg {
+      position: fixed;
+      z-index: 0;
+      left: 0; top: 0;
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    /* Ombak animasi */
+    .ombak-svg {
+      position: absolute;
+      left: 0; width: 100vw;
+      min-width: 100vw;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .ombak1 { bottom: 0; height: 120px; animation: ombakGerak 8s linear infinite; opacity: 0.92;}
+    .ombak2 { bottom: 30px; height: 86px; animation: ombakGerak2 14s linear infinite reverse; opacity: 0.7;}
+    @keyframes ombakGerak {
+      0% { transform: translateX(0);}
+      100% { transform: translateX(-80px);}
+    }
+    @keyframes ombakGerak2 {
+      0% { transform: translateX(0);}
+      100% { transform: translateX(90px);}
+    }
+    /* Matahari */
+    .sun {
+      position: absolute;
+      top: 5vw;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      filter: blur(0.5px) drop-shadow(0 0 40px #ffe08288);
+      animation: sunRise 5s ease-in;
+    }
+    @keyframes sunRise {
+      0% { top: 100vh; opacity: 0;}
+      85% { opacity: 1;}
+      100% { top: 5vw; opacity: 1;}
+    }
+    /* Palm tree */
+    .palm {
+      position: absolute;
+      bottom: 48px; left: 4vw;
+      z-index: 3;
+      width: 61px;
+      height: 180px;
+      opacity: 0.92;
+      pointer-events: none;
+      filter: drop-shadow(2px 18px 8px #0002);
+      animation: palmSway 6.2s ease-in-out infinite alternate;
+    }
+    @keyframes palmSway {
+      0% { transform: rotate(-4deg);}
+      100% { transform: rotate(5deg);}
+    }
+    .palm2 {
+      left: unset;
+      right: 4vw;
+      width: 54px;
+      height: 156px;
+      opacity: 0.85;
+      bottom: 58px;
+      animation-delay: 2.8s;
+    }
+    /* Pasir */
+    .sand {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 130px;
+      background: linear-gradient(180deg, #ffe082c0 0%, #ffd54f 80%, #ffecb3 100%);
+      border-radius: 55% 45% 0 0 / 52% 48% 0 0;
+      z-index: 4;
+      box-shadow: 0 -3px 32px #ffe08244;
+    }
+    /* Kerang */
+    .shell {
+      position: absolute;
+      bottom: 40px; left: 13vw;
+      width: 36px; height: 28px;
+      z-index: 5;
+      opacity: 0.85;
+      filter: drop-shadow(0 4px 6px #deb88766);
+      animation: shellPop 5.5s infinite alternate;
+    }
+    @keyframes shellPop {
+      0% { transform: scale(1);}
+      100% { transform: scale(1.09);}
+    }
+    .shell2 {
+      left: unset; right: 18vw; bottom: 42px;
+      width: 28px; height: 22px;
+      animation-delay: 2.4s;
+    }
+    /* Animasi burung */
+    .bird {
+      position: absolute;
+      z-index: 7;
+      top: 13vw;
+      left: 9vw;
+      width: 60px;
+      height: 38px;
+      opacity: 0.70;
+      animation: birdFly 18s linear infinite;
+      pointer-events: none;
+    }
+    .bird2 {
+      left: 78vw;
+      top: 10vw;
+      width: 40px;
+      opacity: 0.65;
+      animation: birdFly2 20s linear infinite;
+      animation-delay: 6s;
+    }
+    @keyframes birdFly {
+      0% { left: 9vw; top: 13vw;}
+      50% { left: 70vw; top: 8vw;}
+      100% { left: 110vw; top: 17vw;}
+    }
+    @keyframes birdFly2 {
+      0% { left: 78vw; top: 10vw;}
+      50% { left: 20vw; top: 6vw;}
+      100% { left: -10vw; top: 19vw;}
+    }
+    /* Konten */
+    .container {
+      max-width: 540px;
+      width: 94vw;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.82);
+      border-radius: 44px;
+      box-shadow: 0 10px 48px #69c3ce33, 0 1.5px 12px #b3eafc2a;
+      text-align: center;
+      padding: 68px 22px 44px 22px;
+      position: relative;
+      z-index: 10;
+      margin-top: 5vw;
+      margin-bottom: 5vw;
+      backdrop-filter: blur(8px) saturate(1.3);
+      border: 3.5px solid #b3eafc55;
+      overflow: hidden;
+      animation: containerPopIn .9s cubic-bezier(.1,1.6,.6,1.07);
+    }
+    @keyframes containerPopIn {
+      0% { transform: scale(0.92) translateY(30px); opacity: 0;}
+      100% { transform: scale(1) translateY(0); opacity: 1;}
+    }
+    .judul {
+      font-family: 'Fredoka One', 'Comfortaa', cursive;
+      font-size: 3.1em;
+      color: #0f4c81;
+      margin-bottom: 0.12em;
+      letter-spacing: 0.07em;
+      text-shadow: 0 7px 32px #ffe082cc, 0 2px 6px #00b8d499, 0 0px 30px #00b8d455;
+      filter: drop-shadow(0 0 17px #ffe08255);
+      animation: judulTravel 4s infinite alternate cubic-bezier(.2,1.2,.7,.9);
+      transition: color .3s, text-shadow .3s, letter-spacing .2s;
+      cursor: pointer;
+      user-select: none;
+      background: linear-gradient(90deg, #00b8d4 10%, #ffe082 55%, #ffb300 90%, #0f4c81 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 13;
+      border-bottom: 6px double #ffe082;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 8px 18px -7px #ffe08255;
+    }
+    @keyframes judulTravel {
+      0%   { text-shadow: 0 5px 28px #b3eafc88, 0 2px 4px #fff8, 0 0px 30px #00b8d455;}
+      100% { text-shadow: 0 10px 66px #ffe082cc, 0 8px 24px #72d1aa88, 0 0px 52px #ffe08299;}
+    }
+    .judul.animated {
+      animation: judulWave 0.8s cubic-bezier(.44,1.2,.7,.8);
+    }
+    @keyframes judulWave {
+      0% { transform: scale(1.07);}
+      25% { transform: scale(1.04);}
+      50% { transform: scale(1.12);}
+      75% { transform: scale(1.03);}
+      100% { transform: scale(1);}
+    }
+    .judul:hover {
+      color: #00b8d4;
+      letter-spacing: 0.15em;
+      text-shadow: 0 13px 90px #ffe082ee, 0 8px 30px #00b8d4bb;
+      filter: drop-shadow(0 0 22px #ffe082bb);
+      background-position: 100% 0;
+      transition: background-position 0.4s;
+    }
+    .judul.glow {
+      box-shadow: 0 0 40px #ffe082cc, 0 0 100px #00b8d4bb;
+      transition: box-shadow 0.7s;
+    }
+    .sinopsis {
+      font-family: 'Comfortaa', 'Quicksand', Arial, sans-serif;
+      font-size: 1.13em;
+      color: #2f2e41;
+      background: #e3f6fcbb;
+      border-radius: 22px;
+      padding: 26px 20px 21px 20px;
+      margin-bottom: 2.5em;
+      box-shadow: 0 2px 16px #b3eafc50;
+      line-height: 1.8;
+      border-left: 4px solid #00b8d4;
+      border-right: 2px solid #ffe082;
+      position: relative;
+      z-index: 1;
+      letter-spacing: 0.01em;
+      animation: sinopsisFadeIn 1.1s cubic-bezier(.3,1.6,.6,1.07);
+    }
+    .sinopsis.selected {
+      background: linear-gradient(105deg, #fffde7 85%, #ffe082 100%);
+      box-shadow: 0 0 32px #ffe08288;
+      border-left: 6px solid #ffe082;
+      transition: background .4s, box-shadow .4s, border-left 0.4s;
+      color: #0f4c81;
+    }
+    .download-btn {
+      background: linear-gradient(90deg, #00b8d4 0%, #038373 100%);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 21px 65px;
+      font-size: 1.22em;
+      font-family: 'Comfortaa', 'Quicksand', Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      cursor: pointer;
+      box-shadow: 0 5px 24px #00b8d480, 0 2px 5px #fff2;
+      text-decoration: none;
+      transition: background 0.18s, transform 0.16s, box-shadow .18s, filter .18s;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      animation: downloadBtnFadeIn 1.4s cubic-bezier(.3,1.6,.6,1.07);
+    }
+    .download-btn:hover {
+      background: linear-gradient(90deg, #038373 0%, #00b8d4 100%);
+      filter: brightness(1.13) drop-shadow(0 0 14px #ffe08288);
+      outline: 2.5px solid #ffe082;
+      outline-offset: 5px;
+      transition: outline 0.3s;
+    }
+    .download-btn:active {
+      filter: brightness(1.2) drop-shadow(0 0 24px #ffe082e6);
+      outline: 3px solid #00b8d4;
+      outline-offset: 2px;
+    }
+    .download-btn.pulse {
+      animation: pulseBtn 1.1s;
+    }
+    @keyframes pulseBtn {
+      0% { box-shadow: 0 0 0 0 #ffe08277;}
+      80% { box-shadow: 0 0 0 20px #ffe08200;}
+      100% { box-shadow: 0 0 0 0 #ffe08200;}
+    }
+    .download-btn::before {
+      content: "";
+      position: absolute;
+      left: -60px;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.29) 0%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      opacity: 0.0;
+      z-index: 2;
+      pointer-events: none;
+      animation: shineBtn 2.7s infinite linear;
+    }
+    @keyframes shineBtn {
+      0% { left: -70px; opacity: 0;}
+      70% { left: -70px; opacity: 0;}
+      80% { left: 100%; opacity: 0.43;}
+      100% { left: 100%; opacity: 0;}
+    }
+    .tooltip {
+      visibility: hidden;
+      opacity: 0;
+      background: #00b8d4ee;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 7px 18px;
+      position: absolute;
+      z-index: 99;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 120%;
+      font-family: 'Comfortaa', cursive, Arial;
+      font-size: 1em;
+      pointer-events: none;
+      transition: opacity .23s;
+      box-shadow: 0 2px 8px #00b8d466;
+      font-weight: 700;
+    }
+    .download-btn:hover .tooltip, .download-btn:focus .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    .credit {
+      margin-top: 2.2em;
+      color: #2f2e41;
+      font-size: .97em;
+      opacity: .6;
+      font-family: 'Quicksand', Arial, sans-serif;
+      animation: sinopsisFadeIn 1.8s .6s backwards cubic-bezier(.3,1.6,.6,1.07);
+    }
+    @media (max-width: 700px) {
+      .container { padding: 13px 2vw 7px 2vw; }
+      .judul { font-size: 1.3em; }
+      .sinopsis { font-size: .98em; padding: 11px 7px; }
+      .download-btn { font-size: 1em; padding: 12px 14vw; }
+      .sand { height: 80px; }
+      .palm, .palm2 { height: 100px;}
+      .shell, .shell2 { width: 20px; height: 14px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Pantai SVG Layer (ombak, matahari, palm, pasir, kerang) -->
+  <div id="pantai-bg">
+    <!-- Matahari -->
+    <svg class="sun" width="110" height="110">
+      <circle cx="55" cy="55" r="48" fill="#ffe082" opacity="0.98"/>
+      <circle cx="55" cy="55" r="48" fill="url(#sunGrad)" opacity="0.18"/>
+      <defs>
+        <radialGradient id="sunGrad" cx="0.5" cy="0.5" r="0.9">
+          <stop offset="0%" stop-color="#fffde7"/>
+          <stop offset="80%" stop-color="#ffe082" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#ffe082" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+    </svg>
+    <!-- Ombak depan -->
+    <svg class="ombak-svg ombak2" viewBox="0 0 1920 120" preserveAspectRatio="none">
+      <path d="M0,50 Q240,120 480,60 T960,100 T1440,70 T1920,90 V120 H0Z"
+        fill="#b3eafc" opacity="0.55"/>
+      <path d="M0,60 Q240,60 480,100 T960,50 T1440,110 T1920,80 V120 H0Z"
+        fill="#00b8d4" opacity="0.27"/>
+    </svg>
+    <svg class="ombak-svg ombak1" viewBox="0 0 1920 120" preserveAspectRatio="none">
+      <path d="M0,90 Q240,60 480,100 T960,80 T1440,100 T1920,60 V120 H0Z"
+        fill="#b3eafc" opacity="0.9"/>
+      <path d="M0,100 Q240,120 480,60 T960,110 T1440,70 T1920,90 V120 H0Z"
+        fill="#00b8d4" opacity="0.32"/>
+    </svg>
+    <!-- Pohon kelapa kiri -->
+    <svg class="palm" viewBox="0 0 80 200">
+      <rect x="36" y="60" width="8" height="110" rx="5" fill="#a77b4f"/>
+      <ellipse cx="40" cy="62" rx="22" ry="11" fill="#61a672" transform="rotate(-23 40 62)"/>
+      <ellipse cx="48" cy="73" rx="16" ry="7" fill="#61a672" transform="rotate(7 48 73)"/>
+      <ellipse cx="37" cy="69" rx="11" ry="5.5" fill="#72d1aa" transform="rotate(-33 37 69)"/>
+      <ellipse cx="59" cy="58" rx="17" ry="6" fill="#61a672" transform="rotate(27 59 58)"/>
+      <ellipse cx="27" cy="57" rx="15" ry="6" fill="#61a672" transform="rotate(-18 27 57)"/>
+    </svg>
+    <!-- Pohon kelapa kanan -->
+    <svg class="palm palm2" viewBox="0 0 70 170">
+      <rect x="32" y="50" width="6" height="100" rx="4" fill="#a77b4f"/>
+      <ellipse cx="35" cy="52" rx="16" ry="8" fill="#61a672" transform="rotate(19 35 52)"/>
+      <ellipse cx="30" cy="62" rx="12" ry="4.5" fill="#72d1aa" transform="rotate(-28 30 62)"/>
+      <ellipse cx="57" cy="49" rx="11" ry="5" fill="#61a672" transform="rotate(35 57 49)"/>
+      <ellipse cx="20" cy="49" rx="11" ry="5" fill="#61a672" transform="rotate(-19 20 49)"/>
+    </svg>
+    <!-- Burung -->
+    <svg class="bird" viewBox="0 0 60 38">
+      <path d="M2,32 Q30,2 58,32" fill="none" stroke="#607d8b" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    <svg class="bird bird2" viewBox="0 0 60 38">
+      <path d="M2,32 Q30,2 58,32" fill="none" stroke="#607d8b" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <!-- Pasir -->
+    <div class="sand"></div>
+    <!-- Kerang -->
+    <svg class="shell" viewBox="0 0 36 28">
+      <ellipse cx="18" cy="20" rx="18" ry="8" fill="#ffe0b2"/>
+      <ellipse cx="18" cy="20" rx="12" ry="5" fill="#ffd54f" opacity="0.6"/>
+      <ellipse cx="18" cy="24" rx="8" ry="2.5" fill="#ffe082" opacity="0.7"/>
+      <ellipse cx="18" cy="17" rx="6" ry="2.5" fill="#fffde7" opacity="0.8"/>
+    </svg>
+    <svg class="shell shell2" viewBox="0 0 28 22">
+      <ellipse cx="14" cy="16" rx="14" ry="6" fill="#ffe0b2"/>
+      <ellipse cx="14" cy="17" rx="8" ry="2.5" fill="#ffd54f" opacity="0.7"/>
+      <ellipse cx="14" cy="19" rx="6" ry="1.5" fill="#ffe082" opacity="0.7"/>
+    </svg>
+  </div>
+  <div class="container">
+    <svg class="ombak" viewBox="0 0 290 44">
+      <path d="M0,28 Q30,12 60,28 T120,28 T180,28 T240,28 T290,28 L290,44 L0,44Z"
+            fill="#b3eafc" opacity="0.82"/>
+      <ellipse cx="145" cy="28" rx="110" ry="8" fill="#fff" opacity="0.28"/>
+    </svg>
+    <div class="judul" id="judul">Perjalanan ke Bali</div>
+    <div class="sinopsis" id="sinopsis">
+      Kisah penuh warna tentang perjalanan keluarga Rama melintasi indahnya Pulau Bali! Mulai dari menaklukkan Gunung Batur, bersepeda melintasi sawah Ubud, hingga menikmati matahari terbenam di Pantai Kuta.<br><br>
+      Setiap petualangan membawa kisah baru: pengalaman budaya lokal, kuliner lezat, dan tawa di sepanjang jalan. Temukan makna kebersamaan dalam perjalanan ini, di mana gunung, sawah, laut, dan langit biru menjadi saksi kisah keluarga yang tak terlupakan.
+    </div>
+    <a href="Perjalanan-ke-Bali.pdf" class="download-btn" id="downloadBtn" download>
+      ⬇️ Download Cerita
+      <span class="tooltip">Klik untuk mengunduh cerita!</span>
+    </a>
+    <div class="credit">© 2025 Muhammad Maouza Raya Rabani. Semua hak cipta dilindungi.</div>
+  </div>
+  <!-- Sparkle effect (akan dibuat lewat JS) -->
+  <div class="sparkle" id="sparkle" style="display:none"></div>
+  <!-- Starburst effect for download -->
+  <svg class="starburst" id="starburst" viewBox="0 0 120 120" style="display:none">
+    <g stroke="#ffe082" stroke-width="2">
+      <line x1="60" y1="10" x2="60" y2="35"/>
+      <line x1="60" y1="85" x2="60" y2="110"/>
+      <line x1="10" y1="60" x2="35" y2="60"/>
+      <line x1="85" y1="60" x2="110" y2="60"/>
+      <line x1="28" y1="28" x2="44" y2="44"/>
+      <line x1="76" y1="76" x2="92" y2="92"/>
+      <line x1="92" y1="28" x2="76" y2="44"/>
+      <line x1="28" y1="92" x2="44" y2="76"/>
+    </g>
+    <circle cx="60" cy="60" r="20" fill="none" stroke="#ffb300" stroke-width="1.5" opacity="0.5"/>
+  </svg>
+  <script>
+    // Efek starburst saat menekan tombol download
+    const downloadBtn = document.getElementById('downloadBtn');
+    const starburst = document.getElementById('starburst');
+    downloadBtn.addEventListener('click', function(e) {
+      const rect = downloadBtn.getBoundingClientRect();
+      starburst.style.left = (rect.left + rect.width/2 - 60) + 'px';
+      starburst.style.top = (rect.top - 80 + window.scrollY) + 'px';
+      starburst.style.display = 'block';
+      starburst.style.opacity = "1";
+      starburst.style.animation = "starburstPop 1.2s cubic-bezier(.24,1.7,.72,1.13)";
+      setTimeout(()=>{ starburst.style.display = 'none'; }, 900);
+
+      // Sparkle burst
+      for(let i=0;i<4;i++) sparkleBurst(rect);
+
+      // Pulse effect on button
+      downloadBtn.classList.add('pulse');
+      setTimeout(()=>downloadBtn.classList.remove('pulse'), 1100);
+    });
+
+    // Sparkle burst effect
+    function sparkleBurst(rect) {
+      const sparkle = document.getElementById('sparkle').cloneNode(true);
+      document.body.appendChild(sparkle);
+      const angle = Math.random()*2*Math.PI;
+      const radius = 44 + Math.random()*22;
+      const x = rect.left + rect.width/2 + Math.cos(angle)*radius - 9;
+      const y = rect.top + rect.height/2 + Math.sin(angle)*radius - 9 + window.scrollY;
+      sparkle.style.left = x+"px";
+      sparkle.style.top = y+"px";
+      sparkle.style.display = "block";
+      sparkle.style.opacity = "1";
+      sparkle.style.animation = "sparkleAnim 0.8s cubic-bezier(.22,1.6,.7,.9)";
+      setTimeout(()=>{ sparkle.remove(); }, 700+Math.random()*200);
+    }
+
+    // Efek glow pada judul saat klik
+    const judul = document.getElementById('judul');
+    judul.addEventListener('mouseenter', ()=>{
+      judul.classList.add("animated");
+    });
+    judul.addEventListener('mouseleave', ()=>{
+      judul.classList.remove("animated");
+      judul.style.backgroundPosition = "0 0";
+    });
+    judul.addEventListener('mousemove', function(e) {
+      const { left, width } = judul.getBoundingClientRect();
+      const x = (e.clientX-left)/width;
+      judul.style.backgroundPosition = `${x*100}% 0`;
+    });
+    judul.addEventListener('mouseleave', function() {
+      judul.style.backgroundPosition = "0 0";
+    });
+    judul.addEventListener('click', ()=>{
+      judul.classList.add("glow");
+      setTimeout(()=>{ judul.classList.remove("glow"); }, 1300);
+    });
+
+    // Efek highlight pada sinopsis saat double click
+    const sinopsis = document.getElementById('sinopsis');
+    sinopsis.addEventListener('dblclick', ()=>{
+      sinopsis.classList.add('selected');
+      setTimeout(()=>sinopsis.classList.remove('selected'), 2000);
+    });
+
+    // Bubble: animate opacity randomly (gemerlap)
+    function randomBubbleFlicker() {
+      let bubbles = document.querySelectorAll('.bubble');
+      bubbles.forEach((b,i)=>{
+        b.style.opacity = 0.18 + Math.random()*0.38;
+      });
+    }
+    setInterval(randomBubbleFlicker, 900);
+
+    // Floating sparkle random (tropis vibe)
+    setInterval(()=>{
+      const sparkle = document.getElementById('sparkle').cloneNode(true);
+      document.body.appendChild(sparkle);
+      const w = window.innerWidth, h = window.innerHeight;
+      sparkle.style.left = (Math.random()*w-9)+"px";
+      sparkle.style.top = (Math.random()*h-9)+"px";
+      sparkle.style.display = "block";
+      sparkle.style.opacity = "1";
+      sparkle.style.animation = "sparkleAnim 1.1s cubic-bezier(.22,1.6,.7,.9)";
+      setTimeout(()=>{ sparkle.remove(); }, 900+Math.random()*300);
+    }, 1500);
+
+    // Smooth scroll to download on judul double-click
+    judul.addEventListener('dblclick', ()=>{
+      downloadBtn.scrollIntoView({behavior:'smooth', block:'center'});
+      downloadBtn.style.boxShadow = "0 0 40px 10px #ffe082";
+      setTimeout(()=>{ downloadBtn.style.boxShadow = ""; }, 1000);
+    });
+  </script>
+</body>
+</html>

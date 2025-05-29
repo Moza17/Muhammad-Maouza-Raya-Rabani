@@ -1,0 +1,111 @@
+body {
+    background: linear-gradient(120deg, #b0e0e6 0%, #f0e68c 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 36px;
+    color: #2d3a4b;
+    letter-spacing: 1.5px;
+    font-family: 'Segoe Script', cursive, Arial, sans-serif;
+    text-shadow: 0 2px 8px #b0e0e655;
+}
+
+.story-container {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 900px;
+    margin: 36px auto 0 auto;
+    flex-wrap: wrap;
+}
+
+.story-section {
+    flex: 1 1 320px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px #b0e0e655;
+    padding: 28px 24px 20px 24px;
+    min-width: 260px;
+    max-width: 400px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+.story-section:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 32px #b0e0e688;
+}
+
+.story-section h2 {
+    color: #007bff;
+    margin-bottom: 18px;
+    font-size: 1.2em;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.story-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.story-list li {
+    margin-bottom: 16px;
+    font-size: 1.08em;
+    background: rgba(176,224,230,0.13);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: background 0.2s;
+    font-weight: 500;
+}
+.story-list li:hover {
+    background: rgba(240,230,140,0.18);
+}
+
+.story-list a {
+    color: #2d3a4b;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+.story-list a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* Responsive: Stack vertically on small screens */
+@media (max-width: 700px) {
+    .story-container {
+        flex-direction: column;
+        gap: 18px;
+        align-items: stretch;
+    }
+}
+
+a[href="../index.html"] {
+    display: block;
+    text-align: center;
+    margin: 36px auto 0 auto;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.08em;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    padding: 10px 24px;
+    width: fit-content;
+    box-shadow: 0 2px 8px #b0e0e655;
+    transition: background 0.2s, color 0.2s;
+}
+a[href="../index.html"]:hover {
+    background: #b0e0e6;
+    color: #232946;
+}

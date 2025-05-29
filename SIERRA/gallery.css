@@ -1,0 +1,143 @@
+body {
+    background: linear-gradient(120deg, #b0e0e6 0%, #f0e68c 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 36px;
+    color: #2d3a4b;
+    letter-spacing: 1.5px;
+    font-family: 'Segoe Script', cursive, Arial, sans-serif;
+    text-shadow: 0 2px 8px #b0e0e655;
+}
+
+p {
+    text-align: center;
+    color: #555;
+    margin-bottom: 28px;
+    font-size: 1.08em;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 900px;
+    margin: 0 auto 36px auto;
+    padding: 18px 0;
+}
+
+.gallery img {
+    width: 220px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px #b0e0e655;
+    transition: transform 0.25s, box-shadow 0.25s;
+    background: #fff;
+    border: 3px solid #fff8;
+    cursor: pointer;
+}
+.gallery img:hover {
+    transform: scale(1.07) rotate(-2deg);
+    box-shadow: 0 8px 32px #b0e0e688;
+    border-color: #b0e0e6;
+}
+
+a[href="../index.html"] {
+    display: block;
+    text-align: center;
+    margin: 36px auto 0 auto;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.08em;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    padding: 10px 24px;
+    width: fit-content;
+    box-shadow: 0 2px 8px #b0e0e655;
+    transition: background 0.2s, color 0.2s;
+}
+a[href="../index.html"]:hover {
+    background: #b0e0e6;
+    color: #232946;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .gallery {
+        gap: 14px;
+    }
+    .gallery img {
+        width: 98vw;
+        max-width: 340px;
+        height: 140px;
+    }
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(30,34,54,0.85);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+.lightbox.show {
+    display: flex;
+}
+.lightbox-img {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px #0008;
+    background: #fff;
+    animation: fadeInImg 0.4s;
+}
+@keyframes fadeInImg {
+    from { opacity: 0; transform: scale(0.95);}
+    to { opacity: 1; transform: scale(1);}
+}
+.lightbox-close {
+    position: fixed;
+    top: 32px; right: 48px;
+    font-size: 2.5rem;
+    color: #fff;
+    cursor: pointer;
+    z-index: 2100;
+    text-shadow: 0 2px 12px #000a;
+    transition: color 0.2s;
+}
+.lightbox-close:hover {
+    color: #ffe4b5;
+}
+
+.back-home {
+    display: block;
+    text-align: center;
+    margin: 36px auto 0 auto;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.08em;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    padding: 10px 24px;
+    width: fit-content;
+    box-shadow: 0 2px 8px #b0e0e655;
+    transition: background 0.2s, color 0.2s;
+}
+.back-home:hover {
+    background: #b0e0e6;
+    color: #232946;
+}
